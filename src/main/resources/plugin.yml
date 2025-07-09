@@ -3,6 +3,6 @@ version: '${version}'
 main: '${main}'
 description: 'RSPlugin - ${name}'
 api-version: '${api_version}'
-depend: [ RSFramework, SuperiorSkyblock2 ]
+depend: [ RSFramework ]
 softdepend: [ ]
 authors: [ '${author}' ]

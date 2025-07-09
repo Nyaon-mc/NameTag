@@ -6,6 +6,8 @@ import com.github.nyaon08.siny.nametag.configuration.NameTagConfig;
 import com.github.nyaon08.siny.nametag.inventory.NameTagInventory;
 import kr.rtuserver.framework.bukkit.api.command.RSCommand;
 import kr.rtuserver.framework.bukkit.api.command.RSCommandData;
+import kr.rtuserver.framework.bukkit.api.configuration.translation.TranslationType;
+import kr.rtuserver.framework.bukkit.api.configuration.translation.message.MessageTranslation;
 
 import java.util.List;
 
@@ -22,6 +24,10 @@ public class MainCommand extends RSCommand<NameTag> {
 
     @Override
     protected boolean execute(RSCommandData data) {
+        if (player() == null) {
+            chat().announce(message().get(MessageTranslation.Common.ONLY_PLAYER.getKey()));
+            return false;
+        };
         player().openInventory(new NameTagInventory(getPlugin(), player()).getInventory());
         return true;
     }
