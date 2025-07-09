@@ -2,10 +2,12 @@ package com.github.nyaon08.siny.nametag.inventory;
 
 import com.github.nyaon08.siny.nametag.NameTag;
 import com.github.nyaon08.siny.nametag.configuration.IconConfig;
+import com.github.nyaon08.siny.nametag.configuration.NameTagConfig;
 import com.github.nyaon08.siny.nametag.data.Tag;
 import com.github.nyaon08.siny.nametag.manager.NameTagManager;
 import kr.rtuserver.framework.bukkit.api.format.ComponentFormatter;
 import kr.rtuserver.framework.bukkit.api.inventory.RSInventory;
+import kr.rtuserver.framework.bukkit.api.registry.CustomItems;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -15,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.function.BiPredicate;
 public class NameTagInventory extends RSInventory<NameTag> {
 
     private final IconConfig iconConfig;
+    private final NameTagConfig nameTagConfig;
     private final NameTagManager manager;
 
     @Getter
@@ -38,10 +42,11 @@ public class NameTagInventory extends RSInventory<NameTag> {
     public NameTagInventory(NameTag plugin, Player player) {
         super(plugin);
         this.iconConfig = plugin.getIconConfig();
+        this.nameTagConfig = plugin.getNameTagConfig();
         this.manager = plugin.getNameTagManager();
         this.player = player;
 
-        Component title = ComponentFormatter.mini(plugin.getNameTagConfig().getNameTagInventoryName());
+        Component title = ComponentFormatter.mini(nameTagConfig.getNameTagInventoryName());
         this.inventory = createInventory(54, title);
 
         data.addAll(manager.get(player.getUniqueId()).join());
@@ -78,8 +83,28 @@ public class NameTagInventory extends RSInventory<NameTag> {
         return iconConfig.get("menu.pagination." + name + "." + available, display);
     }
 
+    protected void loadPage(Navigation navigation) {
+        if (!navigation.check(page, maxPage)) return;
+        switch (navigation) {
+            case FIRST -> loadPage(0);
+            case PREVIOUS -> loadPage(page - 1);
+            case NEXT -> loadPage(page + 1);
+            case LAST -> loadPage(maxPage);
+        }
+    }
+
     private ItemStack item(Tag tag) {
-        return null;
+        ItemStack itemStack = CustomItems.from(nameTagConfig.getNameTagItem());
+        ItemMeta meta = itemStack.getItemMeta();
+
+        meta.displayName(ComponentFormatter.mini("<!italic><white>" + tag.name() + (tag.active() ? "<green> [장착됨]" : "")));
+
+        List<Component> lore = new ArrayList<>(toComponents(tag.condition()));
+        lore.add(Component.empty());
+        meta.lore(lore);
+
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 
     private List<Component> toComponents(String message) {
@@ -89,11 +114,31 @@ public class NameTagInventory extends RSInventory<NameTag> {
         return result;
     }
 
-    private void init() {
-    }
-
     @Override
     public boolean onClick(Event<InventoryClickEvent> event, RSInventory.Click click) {
+        if (inventory.isEmpty()) return false;
+        if (event.isInventory()) return false;
+
+        int slot = click.slot();
+        if (slot < 0) return false;
+
+        switch (slot) {
+            case 45 -> loadPage(Navigation.FIRST);
+            case 46 -> loadPage(Navigation.PREVIOUS);
+            case 52 -> loadPage(Navigation.NEXT);
+            case 53 -> loadPage(Navigation.LAST);
+            default -> {
+                List<Tag> list = page(page);
+                if (list.size() <= slot) return false;
+
+                Tag tag = list.get(slot);
+
+                manager.activeTag(player.getUniqueId(), tag);
+
+                chat().announce(message().get(tag.name()));
+            }
+        }
+
         return false;
     }
 
