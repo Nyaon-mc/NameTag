@@ -1,0 +1,13 @@
+menu.pagination:
+  first:
+    available: minecraft:nether_star
+    unavailable: minecraft:red_wool
+  last:
+    available: minecraft:nether_star
+    unavailable: minecraft:red_wool
+  previous:
+    available: minecraft:nether_star
+    unavailable: minecraft:red_wool
+  next:
+    available: minecraft:nether_star
+    unavailable: minecraft:red_wool

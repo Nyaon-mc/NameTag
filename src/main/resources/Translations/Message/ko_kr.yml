@@ -1,0 +1,16 @@
+icon:
+  menu:
+    refresh: ""
+    pagination:
+      first:
+        available: "<white>처음 페이지</white>"
+        unavailable: "<gray>처음 페이지</gray>"
+      last:
+        available: "<white>마지막 페이지</white>"
+        unavailable: "<gray>마지막 페이지</gray>"
+      previous:
+        available: "<white>이전 <aqua>[current]</aqua>/<aqua>[max]</aqua></white>"
+        unavailable: "<gray>이전 <red>[current]</red>/<red>[max]</red></gray>"
+      next:
+        available: "<white>다음 <aqua>[current]</aqua>/<aqua>[max]</aqua></white>"
+        unavailable: "<gray>다음 <red>[current]</red>/<red>[max]</red></gray>"
