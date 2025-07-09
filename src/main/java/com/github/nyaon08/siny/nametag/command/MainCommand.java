@@ -25,8 +25,8 @@ public class MainCommand extends RSCommand<NameTag> {
     @Override
     protected boolean execute(RSCommandData data) {
         if (player() == null) {
-            chat().announce(message().get(MessageTranslation.Common.ONLY_PLAYER.getKey()));
-            return false;
+            chat().announce(message().getCommon(MessageTranslation.Common.ONLY_PLAYER.getKey()));
+            return true;
         };
         player().openInventory(new NameTagInventory(getPlugin(), player()).getInventory());
         return true;
