@@ -44,6 +44,7 @@ public class NameTag extends RSPlugin {
         registerCommand(new MainCommand(this), true);
 
         if (getFramework().isEnabledDependency("PlaceholderAPI")) {
+            getLogger().info("PlaceholderAPI is enabled.");
             placeholder = new PlaceholderAPI(this);
             placeholder.register();
         }

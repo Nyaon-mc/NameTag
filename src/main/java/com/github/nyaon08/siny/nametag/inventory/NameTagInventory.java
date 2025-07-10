@@ -132,7 +132,6 @@ public class NameTagInventory extends RSInventory<NameTag> {
                 if (list.size() <= slot) return false;
 
                 Tag tag = list.get(slot);
-
                 manager.activeTag(player.getUniqueId(), tag);
 
                 chat().announce(message().get(tag.name()));

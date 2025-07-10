@@ -35,7 +35,7 @@ public class NameTagManager {
             if (result.isEmpty() || result.getFirst().isJsonNull()) return List.of();
 
             JsonObject obj = result.getFirst().getAsJsonObject();
-            return List.of(new Tag(obj.get("name").getAsString(), obj.get("condition").getAsString() ,obj.get("active").getAsBoolean()));
+            return List.of(new Tag(obj.get("name").getAsString(), obj.get("condition").getAsString(), obj.get("active").getAsBoolean()));
         });
     }
 
