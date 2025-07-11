@@ -115,13 +115,6 @@ public class NameTagInventory extends RSInventory<NameTag> {
         return itemStack;
     }
 
-    private List<Component> toComponents(String message) {
-        List<Component> result = new ArrayList<>();
-        String[] split = message.split("\n");
-        for (String str : split) result.add(ComponentFormatter.mini("<!italic><white>" + str));
-        return result;
-    }
-
     @Override
     public boolean onClick(Event<InventoryClickEvent> event, RSInventory.Click click) {
         if (inventory.isEmpty()) return false;
