@@ -21,7 +21,7 @@ public class NameTagConfig extends RSConfiguration<NameTag> {
                 ex) namespace:id""");
 
         nameTagInventoryName = getString("nameTagInventoryName", nameTagInventoryName, """
-                칭호북 인벤터리의 이름""");
+                칭호북 인벤토리의 이름""");
     }
 
 }
