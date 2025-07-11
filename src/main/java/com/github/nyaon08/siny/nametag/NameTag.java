@@ -24,10 +24,6 @@ public class NameTag extends RSPlugin {
 
     private PlaceholderAPI placeholder;
 
-    public NameTag() {
-        super("ko_kr");
-    }
-
     @Override
     public void load() {
         instance = this;
@@ -44,7 +40,6 @@ public class NameTag extends RSPlugin {
         registerCommand(new MainCommand(this), true);
 
         if (getFramework().isEnabledDependency("PlaceholderAPI")) {
-            getLogger().info("PlaceholderAPI is enabled.");
             placeholder = new PlaceholderAPI(this);
             placeholder.register();
         }

@@ -97,10 +97,18 @@ public class NameTagInventory extends RSInventory<NameTag> {
         ItemStack itemStack = CustomItems.from(nameTagConfig.getNameTagItem());
         ItemMeta meta = itemStack.getItemMeta();
 
-        meta.displayName(ComponentFormatter.mini("<!italic><white>" + tag.name() + (tag.active() ? "<green> [장착됨]" : "")));
+        meta.displayName(ComponentFormatter.mini(
+                (tag.active() ?
+                        message().get("icon.tag.active") :
+                        message().get("icon.tag.inactive"))
+                        .replace("[tag]", tag.name())
+        ));
 
-        List<Component> lore = new ArrayList<>(toComponents(tag.condition()));
-        lore.add(Component.empty());
+        List<Component> lore = new ArrayList<>();
+        lore.add(ComponentFormatter.mini(
+                message().get("icon.tag.condition")
+                        .replace("[condition]", tag.condition())
+        ));
         meta.lore(lore);
 
         itemStack.setItemMeta(meta);
@@ -132,9 +140,15 @@ public class NameTagInventory extends RSInventory<NameTag> {
                 if (list.size() <= slot) return false;
 
                 Tag tag = list.get(slot);
-                manager.activeTag(player.getUniqueId(), tag);
 
-                chat().announce(message().get(tag.name()));
+                if (tag.active()) {
+                    chat().announce(message().get("already_activated").replace("[tag]", tag.name()));
+                    return false;
+                }
+
+                manager.activeTag(player.getUniqueId(), tag);
+                chat().announce(message().get("tag_activated").replace("[tag]", tag.name()));
+                player.openInventory(new NameTagInventory(getPlugin(), player).getInventory());
             }
         }
 

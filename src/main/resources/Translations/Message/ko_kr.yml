@@ -1,4 +1,12 @@
+tag_activated: "<aqua>[tag]</aqua> <green>칭호를 장착 하였습니다.</green>"
+already_activated: "<green>이미 <aqua>[tag]</aqua> 칭호를 장착 하였습니다.</green>"
+
 icon:
+  tag:
+    active: "<!italic><white>[tag]</white> <green>[장착]</green>"
+    inactive: "<!italic><white>[tag]</white>"
+    condition: "<!italic><aqua>획득 조권:</aqua> <white>[condition]</white>"
+
   menu:
     refresh: ""
     pagination:

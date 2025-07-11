@@ -63,7 +63,7 @@ public class NameTagManager {
             JsonObject obj = result.getFirst().getAsJsonObject();
             boolean isActive = obj.get("active").getAsBoolean();
             if (isActive) return obj.get("tag").getAsString();
-            return null;
+            return "";
         }).join();
     }
 

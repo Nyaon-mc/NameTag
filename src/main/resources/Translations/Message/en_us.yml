@@ -1,0 +1,23 @@
+tag_activated: "<aqua>[tag]</aqua> <green>Title has been equipped.</green>"
+already_activated: "<green>You have already equipped the <aqua>[tag]</aqua> title.</green>"
+
+icon:
+  tag:
+    active: "<!italic><white>[tag]</white> <green>[Equipped]</green>"
+    inactive: "<!italic><white>[tag]</white>"
+    condition: "<!italic><aqua>Unlock condition:</aqua> <white>[condition]</white>"
+  menu:
+    refresh: ""
+    pagination:
+      first:
+        available: "<white>First Page</white>"
+        unavailable: "<gray>First Page</gray>"
+      last:
+        available: "<white>Last Page</white>"
+        unavailable: "<gray>Last Page</gray>"
+      previous:
+        available: "<white>Previous <aqua>[current]</aqua>/<aqua>[max]</aqua></white>"
+        unavailable: "<gray>Previous <red>[current]</red>/<red>[max]</red></gray>"
+      next:
+        available: "<white>Next<aqua>[current]</aqua>/<aqua>[max]</aqua></white>"
+        unavailable: "<gray>Next <red>[current]</red>/<red>[max]</red></gray>"

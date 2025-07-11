@@ -9,16 +9,16 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 public class IconConfig extends RSConfiguration<NameTag> {
 
-    private final Map<String, ItemStack> cache = new HashMap<>();
+    private final Map<String, ItemStack> cache = new ConcurrentHashMap<>();
 
     public IconConfig(NameTag plugin) {
-        super(plugin, "Icon.yml", null);
+        super(plugin, "Icon.yml", 1);
         setup(this);
     }
 
