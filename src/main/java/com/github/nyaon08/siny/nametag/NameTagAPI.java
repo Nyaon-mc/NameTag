@@ -29,7 +29,6 @@ public final class NameTagAPI {
      * @return 활성화된 태그 이름
      */
     public static String getActiveTag(OfflinePlayer player) {
-        if (player == null) return null;
         return plugin().getNameTagManager().activeTag(player.getUniqueId());
     }
 
@@ -39,7 +38,6 @@ public final class NameTagAPI {
      * @param tag 추가할 태그
      */
     public static void addTag(OfflinePlayer player, Tag tag) {
-        if (player == null || tag == null) return;
         plugin().getNameTagManager().add(player.getUniqueId(), tag);
     }
 }
