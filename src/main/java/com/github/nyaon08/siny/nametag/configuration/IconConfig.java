@@ -1,5 +1,5 @@
 package com.github.nyaon08.siny.nametag.configuration;
-
+    
 import com.github.nyaon08.siny.nametag.NameTag;
 import kr.rtuserver.framework.bukkit.api.configuration.RSConfiguration;
 import kr.rtuserver.framework.bukkit.api.format.ComponentFormatter;

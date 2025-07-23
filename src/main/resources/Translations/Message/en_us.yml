@@ -1,5 +1,6 @@
 tag_activated: "<aqua>[tag]</aqua> <green>Title has been equipped.</green>"
-already_activated: "<green>You have already equipped the <aqua>[tag]</aqua> title.</green>"
+tag_deactivated: "<aqua>[tag]</aqua> <green>tag has been unequipped.</green>"
+give_tag: "<green>Gave the <aqua>[tag]</aqua> tag to <green>[player]</green>.</green>"
 
 icon:
   tag:

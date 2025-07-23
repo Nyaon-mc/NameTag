@@ -135,12 +135,13 @@ public class NameTagInventory extends RSInventory<NameTag> {
                 Tag tag = list.get(slot);
 
                 if (tag.active()) {
-                    chat().announce(message().get("already_activated").replace("[tag]", tag.name()));
-                    return false;
+                    manager.deactivateTag(player.getUniqueId());
+                    chat().announce(message().get("tag_deactivated").replace("[tag]", tag.name()));
+                } else {
+                    manager.activateTag(player.getUniqueId(), tag);
+                    chat().announce(message().get("tag_activated").replace("[tag]", tag.name()));
                 }
 
-                manager.activeTag(player.getUniqueId(), tag);
-                chat().announce(message().get("tag_activated").replace("[tag]", tag.name()));
                 player.openInventory(new NameTagInventory(getPlugin(), player).getInventory());
             }
         }

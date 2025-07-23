@@ -17,7 +17,7 @@ public class PlaceholderAPI extends RSPlaceholder<NameTag> {
     @Override
     public String request(OfflinePlayer offlinePlayer, String[] params) {
         if (params[0].equals("tag")) {
-            return manager.activeTag(offlinePlayer.getUniqueId());
+            return manager.activateTag(offlinePlayer.getUniqueId());
         }
         return "ERROR";
     }

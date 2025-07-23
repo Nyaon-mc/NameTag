@@ -7,10 +7,7 @@ import kr.rtuserver.framework.bukkit.api.platform.JSON;
 import kr.rtuserver.framework.bukkit.api.storage.Storage;
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
@@ -32,38 +29,79 @@ public class NameTagManager {
     public CompletableFuture<List<Tag>> get(UUID uuid) {
         Storage storage = plugin.getStorage();
         return storage.get("nametag", JSON.of("uuid", uuid.toString())).thenApplyAsync(result -> {
-            if (result.isEmpty() || result.getFirst().isJsonNull()) return List.of();
-            JsonObject obj = result.getFirst().getAsJsonObject();
-            return List.of(new Tag(obj.get("name").getAsString(), obj.get("condition").getAsString(), obj.get("active").getAsBoolean()));
+            if (result.isEmpty()) return List.of();
+
+            List<Tag> tags = new ArrayList<>();
+            for (JsonObject jsonObject : result) {
+                JsonObject obj = jsonObject.getAsJsonObject();
+                Tag tag = new Tag(
+                        obj.get("name").getAsString(),
+                        obj.get("condition").getAsString(),
+                        obj.get("active").getAsBoolean()
+                );
+                tags.add(tag);
+                cache.put(uuid, tag);
+            }
+
+            return tags;
         });
     }
 
-    public void activeTag(UUID uuid, Tag tag) {
+    public void activateTag(UUID uuid, Tag tag) {
         Storage storage = plugin.getStorage();
         storage.get("nametag", JSON.of("uuid", uuid.toString())).thenApplyAsync(result -> {
-            if (!result.isEmpty() && !result.getFirst().isJsonNull()) {
-                JsonObject obj = result.getFirst().getAsJsonObject();
-                if (obj.get("active").getAsBoolean()) {
-                    storage.set("nametag", JSON.of("uuid", uuid.toString()), JSON.of("active", false)).join();
+            for (JsonObject obj : result) {
+                JsonObject json = obj.getAsJsonObject();
+                if (json.get("active").getAsBoolean()) {
+                    String tagName = json.get("name").getAsString();
+                    storage.set("nametag", JSON.of("uuid", uuid.toString()).append("name", tagName), JSON.of("active", false)).join();
                 }
             }
             return null;
         }).join();
 
         cache.put(uuid, tag);
-        storage.set("nametag", JSON.of("uuid", uuid.toString()), JSON.of("active", true)).join();
+        storage.set("nametag", JSON.of("uuid", uuid.toString()).append("name", tag.name()), JSON.of("active", true)).join();
     }
 
-    public String activeTag(UUID uuid) {
+    public String activateTag(UUID uuid) {
         Storage storage = plugin.getStorage();
-        if (cache.containsKey(uuid)) return cache.get(uuid).name();
+
+        Tag cached = cache.get(uuid);
+        if (cached != null && cached.active()) {
+            return cached.name();
+        }
+
         return storage.get("nametag", JSON.of("uuid", uuid.toString())).thenApplyAsync(result -> {
-            if (result.isEmpty() || result.getFirst().isJsonNull()) return "";
-            JsonObject obj = result.getFirst().getAsJsonObject();
-            boolean isActive = obj.get("active").getAsBoolean();
-            if (isActive) return obj.get("tag").getAsString();
+            for (JsonObject obj : result) {
+                JsonObject json = obj.getAsJsonObject();
+                if (json.has("active") && json.get("active").getAsBoolean()) {
+                    return json.get("tag").getAsString();
+                }
+            }
             return "";
         }).join();
+    }
+
+    public void deactivateTag(UUID uuid) {
+        Storage storage = plugin.getStorage();
+        storage.get("nametag", JSON.of("uuid", uuid.toString())).thenApplyAsync(result -> {
+            for (JsonObject obj : result) {
+                JsonObject json = obj.getAsJsonObject();
+
+                if (json.has("active") && json.get("active").getAsBoolean()) {
+                    String tagName = json.get("name").getAsString();
+
+                    storage.set("nametag",
+                            JSON.of("uuid", uuid.toString()).append("name", tagName),
+                            JSON.of("active", false)
+                    ).join();
+                }
+            }
+            return null;
+        }).join();
+
+        cache.remove(uuid);
     }
 
 }

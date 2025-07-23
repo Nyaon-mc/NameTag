@@ -30,7 +30,7 @@ public final class NameTagAPI {
      */
     public static String getActiveTag(OfflinePlayer player) {
         if (player == null) return null;
-        return plugin().getNameTagManager().activeTag(player.getUniqueId());
+        return plugin().getNameTagManager().activateTag(player.getUniqueId());
     }
 
     /**

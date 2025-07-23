@@ -1,2 +1,5 @@
 nametag:
   name: "칭호"
+
+givetag:
+  name: "지급"

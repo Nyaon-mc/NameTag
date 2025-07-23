@@ -1,2 +1,5 @@
 nametag:
   name: "nametag"
+
+givetag:
+  name: "give"

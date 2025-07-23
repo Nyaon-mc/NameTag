@@ -17,6 +17,9 @@ public class MainCommand extends RSCommand<NameTag> {
 
     public MainCommand(NameTag plugin) {
         super(plugin, "nametag");
+
+        registerCommand(new GiveTagCommand(plugin));
+
         this.iconConfig = plugin.getIconConfig();
         this.nameTagConfig = plugin.getNameTagConfig();
     }
