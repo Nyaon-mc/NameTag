@@ -7,6 +7,7 @@ icon:
     active: "<!italic><white>[tag]</white> <green>[Equipped]</green>"
     inactive: "<!italic><white>[tag]</white>"
     condition: "<!italic><aqua>Unlock condition:</aqua> <white>[condition]</white>"
+
   menu:
     refresh: ""
     pagination:
